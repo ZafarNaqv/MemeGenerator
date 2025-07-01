@@ -40,8 +40,9 @@ build/
 *.war
 
 # Node (frontend)
-/frontend/node_modules
-/frontend/build
+frontend/node_modules/
+frontend/build/
+frontend/.vite/
 
 # OS
 .DS_Store
