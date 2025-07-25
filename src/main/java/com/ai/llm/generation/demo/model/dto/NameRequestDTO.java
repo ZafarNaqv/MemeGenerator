@@ -1,7 +1,10 @@
 package com.ai.llm.generation.demo.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class NameRequestDTO {
-    String name;
+    @JsonProperty("name")
+    private String name;
     
     public String getName() {
         return name;
