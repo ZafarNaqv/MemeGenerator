@@ -4,6 +4,8 @@ import com.ai.llm.generation.demo.model.MessageDTO;
 import com.ai.llm.generation.demo.model.OpenRouterApi;
 import com.ai.llm.generation.demo.model.dto.ChatRequestDTO;
 import com.ai.llm.generation.demo.model.dto.ChatResponseDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import retrofit2.Response;
 
@@ -15,6 +17,7 @@ public class OpenRouterService {
     
     private final OpenRouterApi api;
     public static final String LLM_MODEL  = "meta-llama/llama-3-8b-instruct";
+    private static final Logger logger = LoggerFactory.getLogger(OpenRouterService.class);
     
     public OpenRouterService(OpenRouterApi api) {
         this.api = api;
@@ -36,9 +39,11 @@ public class OpenRouterService {
                         .getMessage()
                         .getContent();
             } else {
-                return "Error: " + response.code() + " - " + (response.errorBody() != null ? response.errorBody().string() : "Unknown error");
+                logger.error("Error getting completion response: " + response.errorBody().string());
+                return "Error: " + response.code() + " - " + (response.message() != null ? response.message(): "Unknown error");
             }
         } catch (IOException e) {
+            logger.error("IOException recieved: " + e.getMessage());
             return "Exception occurred: " + e.getMessage();
         }
     }
