@@ -24,7 +24,7 @@ public class OpenRouterService {
     }
     
     public String getCompletion(String name) {
-        String prompt = "Give 5 interesting facts in small bullet points about the name: " +name;
+        String prompt = "Give 5 interesting facts in small bullet points directly about the name: " +name;
         ChatRequestDTO request = new ChatRequestDTO(
                 LLM_MODEL,
                 List.of(new MessageDTO("user", prompt))
