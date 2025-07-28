@@ -1,37 +1,26 @@
-"# MemeGenerator" 
+## Know Your Name
 ## TODO:
-- Add backend apis
-- Implement Advice to log parameter details
+- Add backend apis X
+- Implement Advice to log parameter details X
 - Add google Signin maybe?
-- Where to store images
-- Logging framework
+- Logging framework X
 - Cloud deployment
-- Add a way to save feedback
+- Add a way to save feedback X
 - On production might have to include secrets manager to include api key
-- API:Get all generated images, need to do maybe pagination
 
 
 ## 🧠 Core Features Recap
 🖼️ Frontend
-- Upload a selfie (with loader animation during generation).
+- Name Name/feedback
 
-- Fetch available prompts (from backend).
+- Get appropiate response (from backend).
 
-- View previously generated comics.
 
-- Hosted for free (e.g., Vercel for frontend).
+- Hosted for free (e.g., Render).
 
 ## 🧰 Backend (Java Spring Boot)
 Endpoint to:
 
-- Accept image upload.
-
-- Validate or resize image (max 1MB).
-
-- Read prompt from a JSON file (based on user selection).
-
-- Call ChatGPT with image + prompt.
-
-- Save result (image/base64).
+- Invoke Openrouter api X
 
 - Secure using API key/token.
