@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class ForwardingController {
-    @RequestMapping(value = {"/admin/{path:[^\\.]*}", "/admin/**/{path:[^\\.]*}"})
+    @RequestMapping(value = {"/admin/{path:[^\\.]*}", "/admin/**"})
     public String forwardAdminPaths() {
         return "forward:/index.html";
     }

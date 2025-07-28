@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class OpenRouterConfig {
     private static final Logger logger = LoggerFactory.getLogger(OpenRouterService.class);
     
-    @Value("${open.router.api}")
+    @Value("${open.router.api:some-default}")
     private String apiKey;
     
     public String getApiKey() {
