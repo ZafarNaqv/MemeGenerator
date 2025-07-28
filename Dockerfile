@@ -1,27 +1,34 @@
-# Stage 1: Build Spring Boot App + React frontend
+# Stage 1: Build frontend and backend
 FROM maven:3.9.1-eclipse-temurin-17 AS build
 
 WORKDIR /app
 
-# Install Node.js and npm (required by frontend-maven-plugin)
-RUN apt-get update && \
-    apt-get install -y curl && \
-    curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
-    apt-get install -y nodejs && \
-    node -v && npm -v
+# Install Node.js manually (because base image doesn't have it)
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get update && \
+    apt-get install -y nodejs
 
-# Copy all files
+# Copy everything into the container
 COPY . .
 
-# Build the whole project (frontend + backend)
+# Build frontend
+WORKDIR /app/frontend
+RUN npm install && npm run build
+
+# Move built frontend into Spring Boot's static folder
+RUN rm -rf /app/src/main/resources/static && \
+    mkdir -p /app/src/main/resources/static && \
+    cp -r build/* /app/src/main/resources/static/
+
+# Build backend JAR
+WORKDIR /app
 RUN mvn clean package -DskipTests
 
-# Stage 2: Run only the Spring Boot JAR
+# Stage 2: Run the built JAR
 FROM eclipse-temurin:17-jdk-alpine
 
 WORKDIR /app
 
-# Copy the jar file built in the previous stage
 COPY --from=build /app/target/*.jar app.jar
 
 EXPOSE 8080
