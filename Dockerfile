@@ -3,6 +3,13 @@ FROM maven:3.9.1-eclipse-temurin-17 AS build
 
 WORKDIR /app
 
+# Install Node.js and npm (required by frontend-maven-plugin)
+RUN apt-get update && \
+    apt-get install -y curl && \
+    curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs && \
+    node -v && npm -v
+
 # Copy all files
 COPY . .
 
