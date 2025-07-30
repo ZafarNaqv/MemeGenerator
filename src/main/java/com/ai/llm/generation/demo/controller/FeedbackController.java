@@ -2,7 +2,7 @@ package com.ai.llm.generation.demo.controller;
 
 import com.ai.llm.generation.demo.model.dto.FeedbackRequestDTO;
 import com.ai.llm.generation.demo.service.FeedbackService;
-import com.ai.llm.generation.demo.service.OpenRouterService;
+import jakarta.websocket.server.PathParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +28,17 @@ public class FeedbackController {
     
     @GetMapping
     public ResponseEntity<?> getAllFeedbacks() {
-        return ResponseEntity.ok(service.getAllFeedbacks());
+        return ResponseEntity.ok(service.getAllFeedbackReversed());
     }
+    
+    @DeleteMapping
+    public ResponseEntity<?> deleteAllFeedbacks() {
+        return service.deleteAllFeedbacks();
+    }
+    
+    @DeleteMapping("/{feedbackId}")
+    public ResponseEntity<?> deleteById(@PathVariable String feedbackId) {
+        return service.deleteByFeedbackId(feedbackId);
+    }
+    
 }

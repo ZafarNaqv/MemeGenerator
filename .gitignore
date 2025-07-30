@@ -50,3 +50,4 @@ frontend/node/
 Thumbs.dbsrc/main/resources/application.properties
 
 *.jsonl
+*.json

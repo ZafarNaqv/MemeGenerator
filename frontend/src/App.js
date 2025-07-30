@@ -1,16 +1,34 @@
 import React, {useEffect, useState} from "react";
 import FeedbackForm from "./FeedbackForm";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom";
 import FeedbackListPage from "./pages/FeedbackListPage";
+import LandingPage from "./pages/LandingPage";
+import ProtectedRoute from "./route/ProtectedRoute";
+import ProtectedAdminRoute from "./route/ProtectedAdminRoute";
 import './App.css';
+import HoverFlipCard from "./components/HoverFlipCard";
+import {nameCards} from "./props/userCard";
 
 
 function App() {
   return (
       <Router>
         <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/admin/feedback" element={<FeedbackListPage />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/home" element={
+            <ProtectedRoute>
+              <HomePage />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/admin/feedback" element={
+            <ProtectedAdminRoute>
+              <FeedbackListPage />
+            </ProtectedAdminRoute>
+          } />
+
+          {/* Redirect any unknown routes to landing */}
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>
   );
@@ -110,6 +128,13 @@ function HomePage() {
   return (
       <div className="container">
         <h1>Know Your Name</h1>
+        <div style={{display: "flex", flexWrap: "wrap", justifyContent: "center",marginBottom: "30px"}}>
+          {nameCards.map((card, index) => (
+              <div key={index} style={{margin: "10px" }}>
+                <HoverFlipCard {...card} />
+              </div>
+          ))}
+        </div>
 
         <div className="form-group name-form">
           <label htmlFor="name">Enter Name:</label>
@@ -126,7 +151,7 @@ function HomePage() {
           <small>{remaining} characters remaining</small>
 
           <button onClick={handleSubmit} disabled={loading || !name.trim()}>
-            {loading ? <span className="spinner" /> : "Submit"}
+            {loading ? <span className="spinner"/> : "Submit"}
           </button>
 
           <div className="output">
@@ -139,7 +164,7 @@ function HomePage() {
         </div>
 
         <div className="form-group feedback-container">
-          <FeedbackForm />
+          <FeedbackForm/>
         </div>
       </div>
   );
