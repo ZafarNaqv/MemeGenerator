@@ -3,6 +3,8 @@ import FeedbackForm from "./FeedbackForm";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import FeedbackListPage from "./pages/FeedbackListPage";
 import './App.css';
+import HoverFlipCard from "./components/HoverFlipCard";
+import {nameCards} from "./props/userCard";
 
 
 function App() {
@@ -110,6 +112,13 @@ function HomePage() {
   return (
       <div className="container">
         <h1>Know Your Name</h1>
+        <div style={{display: "flex", flexWrap: "wrap", justifyContent: "center",marginBottom: "30px"}}>
+          {nameCards.map((card, index) => (
+              <div key={index} style={{margin: "10px" }}>
+                <HoverFlipCard {...card} />
+              </div>
+          ))}
+        </div>
 
         <div className="form-group name-form">
           <label htmlFor="name">Enter Name:</label>
@@ -126,7 +135,7 @@ function HomePage() {
           <small>{remaining} characters remaining</small>
 
           <button onClick={handleSubmit} disabled={loading || !name.trim()}>
-            {loading ? <span className="spinner" /> : "Submit"}
+            {loading ? <span className="spinner"/> : "Submit"}
           </button>
 
           <div className="output">
@@ -139,7 +148,7 @@ function HomePage() {
         </div>
 
         <div className="form-group feedback-container">
-          <FeedbackForm />
+          <FeedbackForm/>
         </div>
       </div>
   );
