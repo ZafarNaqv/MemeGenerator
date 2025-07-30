@@ -13,8 +13,8 @@ export const nameCards = [
     {
         image: asadImg,
         name: "Ali Asad",
-        meaning: "Alive and generous",
+        meaning: "Ali means exalted or elevated while Asad means lion",
         origin: "Arabic origin",
-        historical: "Common among warrior clans. Reflects courage, honor, and leadership.",
+        historical: "The name Ali has a rich history, with several notable figures in Islamic and Arab history bearing the name.",
     }
 ];
