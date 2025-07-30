@@ -15,6 +15,6 @@ export const nameCards = [
         name: "Ali Asad",
         meaning: "Ali means exalted or elevated while Asad means lion",
         origin: "Arabic origin",
-        historical: "The name Ali has a rich history, with several notable figures in Islamic and Arab history bearing the name.",
+        historical: "Several notable figures in Islamic and Arab history bear the name Ali.",
     }
 ];

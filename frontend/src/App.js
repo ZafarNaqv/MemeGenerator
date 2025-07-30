@@ -1,7 +1,10 @@
 import React, {useEffect, useState} from "react";
 import FeedbackForm from "./FeedbackForm";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom";
 import FeedbackListPage from "./pages/FeedbackListPage";
+import LandingPage from "./pages/LandingPage";
+import ProtectedRoute from "./route/ProtectedRoute";
+import ProtectedAdminRoute from "./route/ProtectedAdminRoute";
 import './App.css';
 import HoverFlipCard from "./components/HoverFlipCard";
 import {nameCards} from "./props/userCard";
@@ -11,8 +14,21 @@ function App() {
   return (
       <Router>
         <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/admin/feedback" element={<FeedbackListPage />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/home" element={
+            <ProtectedRoute>
+              <HomePage />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/admin/feedback" element={
+            <ProtectedAdminRoute>
+              <FeedbackListPage />
+            </ProtectedAdminRoute>
+          } />
+
+          {/* Redirect any unknown routes to landing */}
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>
   );
