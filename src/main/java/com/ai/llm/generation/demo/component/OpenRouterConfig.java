@@ -5,11 +5,9 @@ import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 @Component
-@PropertySource("classpath:application.properties")
 public class OpenRouterConfig {
     private static final Logger logger = LoggerFactory.getLogger(OpenRouterService.class);
     
