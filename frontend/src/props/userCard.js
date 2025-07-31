@@ -1,5 +1,5 @@
-import zafarImg from "../images/zafar.png";
-import asadImg from "../images/asad.png";
+import zafarImg from "../images/zafar.PNG";
+import asadImg from "../images/asad.PNG";
 
 
 export const nameCards = [
