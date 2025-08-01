@@ -69,6 +69,16 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.7.3</version> <!-- or latest -->
+		</dependency>
+
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -121,11 +131,14 @@
 
 					<!-- npm run build -->
 					<execution>
-						<id>npm run build</id>
+						<id>npm run build with env</id>
 						<goals><goal>npm</goal></goals>
 						<phase>generate-resources</phase>
 						<configuration>
 							<arguments>run build</arguments>
+							<environmentVariables>
+								<REACT_APP_DEV_MODE>true</REACT_APP_DEV_MODE>
+							</environmentVariables>
 						</configuration>
 					</execution>
 				</executions>

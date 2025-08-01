@@ -1,0 +1,73 @@
+
+.error-page-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: linear-gradient(to bottom right, #f5fefd, #c4e2f9);
+    padding: 20px;
+}
+
+
+.error-banner-card {
+    display: flex;
+    background-color: #e2eff1;
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    max-width: 700px;
+    width: 100%;
+}
+
+/* Image styling */
+.error-banner-image {
+    max-width: 40%;
+    height: auto;
+    border-radius: 12px;
+    margin-right: 40px;
+}
+
+/* Text and button section */
+.error-banner-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 60%;
+}
+
+.error-banner-icon {
+    color: #d9534f;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 10px;
+}
+
+.error-banner-text h1 {
+    font-size: 3rem;
+    margin: 0;
+    color: #333;
+}
+
+.error-banner-text p {
+    font-size: 1.3rem;
+    margin-top: 10px;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+
+.error-home-button {
+    padding: 12px 24px;
+    font-size: 1rem;
+    color: white;
+    background-color: #d9534f;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    align-self: flex-start;
+    transition: background-color 0.3s ease;
+}
+
+.error-home-button:hover {
+    background-color: #c9302c;
+}

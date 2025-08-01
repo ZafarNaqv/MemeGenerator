@@ -8,6 +8,7 @@ import ProtectedAdminRoute from "./route/ProtectedAdminRoute";
 import './App.css';
 import HoverFlipCard from "./components/HoverFlipCard";
 import {nameCards} from "./props/userCard";
+import ErrorPage from "./pages/ErrorPage";
 
 
 function App() {
@@ -27,8 +28,8 @@ function App() {
             </ProtectedAdminRoute>
           } />
 
-          {/* Redirect any unknown routes to landing */}
-          <Route path="*" element={<Navigate to="/" />} />
+          <Route path="/error" element={<ErrorPage />} />
+          <Route path="*" element={<Navigate to="/error" />} />
         </Routes>
       </Router>
   );

@@ -6,6 +6,12 @@ export default function ProtectedRoute({ children }) {
     const [checked, setChecked] = useState(false);
 
     useEffect(() => {
+        if (process.env.REACT_APP_DEV_MODE === "true") {
+            setUser({ name: "Dev User", email: "dev@example.com" }); // dummy user
+            setChecked(true);
+            return;
+        }
+
         fetch("/api/user")
             .then(res => (res.ok ? res.json() : null))
             .then(data => setUser(data))
