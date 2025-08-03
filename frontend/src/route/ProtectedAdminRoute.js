@@ -1,28 +1,24 @@
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 
-
-
 export default function ProtectedAdminRoute({ children }) {
     const [user, setUser] = useState(null);
     const [checked, setChecked] = useState(false);
 
-    /**
-     * @typedef {Object} UserData
-     * @property {string} email
-     * @property {string} name
-     * @property {boolean} isAdmin
-     */
-
-    /** @type {UserData|null} */
-    let userData = null;
     useEffect(() => {
-        fetch("/api/user")
-            .then(res => res.ok ? res.json() : null)
+        if (process.env.REACT_APP_DEV_MODE === "true") {
+            setUser({ name: "Dev Admin", email: "admin@example.com", isAdmin: true });
+            setChecked(true);
+            return;
+        }
+
+        fetch("/api/user", {
+            credentials: "include"
+        })
+            .then(res => (res.ok ? res.json() : null))
             .then(data => {
-                userData = data;
-                if (userData && userData.isAdmin === true) {
-                    setUser(userData);
+                if (data && data.isAdmin === true) {
+                    setUser(data);
                 } else {
                     setUser(null);
                 }

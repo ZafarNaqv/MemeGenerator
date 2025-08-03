@@ -1,0 +1,12 @@
+.feedback-status {
+    margin-top: 0.5rem;
+    font-weight: bold;
+}
+
+.feedback-status.success {
+    color: green;
+}
+
+.feedback-status.error {
+    color: red;
+}

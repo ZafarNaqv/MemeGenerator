@@ -2,9 +2,12 @@ package com.ai.llm.generation.demo.controller;
 
 import com.ai.llm.generation.demo.model.dto.FeedbackRequestDTO;
 import com.ai.llm.generation.demo.service.FeedbackService;
-import jakarta.websocket.server.PathParam;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 
 @RestController
@@ -18,11 +21,11 @@ public class FeedbackController {
     }
     
     @PostMapping
-    public ResponseEntity<?> submitFeedback(@RequestBody FeedbackRequestDTO dto) {
+    public ResponseEntity<?> submitFeedback(@RequestBody FeedbackRequestDTO dto, @AuthenticationPrincipal OAuth2User principal) {
         if (dto.getFeedback() == null || dto.getFeedback().trim().isEmpty()) {
             return ResponseEntity.badRequest().body("Feedback cannot be empty");
         }
-        return service.saveFeedback(dto);
+        return service.saveFeedback(dto,principal);
        
     }
     
@@ -38,7 +41,12 @@ public class FeedbackController {
     
     @DeleteMapping("/{feedbackId}")
     public ResponseEntity<?> deleteById(@PathVariable String feedbackId) {
-        return service.deleteByFeedbackId(feedbackId);
+        try {
+            UUID id = UUID.fromString(feedbackId);
+            return service.deleteByFeedbackId(id);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Invalid UUID format: " + feedbackId);
+        }
     }
     
 }

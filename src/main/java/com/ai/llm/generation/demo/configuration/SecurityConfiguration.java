@@ -1,8 +1,11 @@
 package com.ai.llm.generation.demo.configuration;
 
+import com.ai.llm.generation.demo.service.CustomOidcUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -16,7 +19,11 @@ public class SecurityConfiguration {
     @Value("${admin.email:someEmail@host.com}")
     private String ADMIN_EMAIL;
     
+    @Autowired
+    private CustomOidcUserService customOidcUserService;
+    
     @Bean
+    @Profile("!dev")
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         final String adminEmail = ADMIN_EMAIL;
         
@@ -34,11 +41,22 @@ public class SecurityConfiguration {
                 )
                 .oauth2Login(oauth -> oauth
                         .loginPage("/login")
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .oidcUserService(customOidcUserService)
+                        )
                         .defaultSuccessUrl("/home", true)
                 )
                 .logout(logout -> logout.logoutSuccessUrl("/"))
                 .csrf(AbstractHttpConfigurer::disable);
         
+        return http.build();
+    }
+    
+    @Bean
+    @Profile("dev")
+    public SecurityFilterChain devSecurityFilterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests(authz -> authz.anyRequest().permitAll())
+                .csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
 }

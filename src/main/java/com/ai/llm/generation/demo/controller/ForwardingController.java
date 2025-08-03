@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ForwardingController {
     @RequestMapping(value = {
             "/{path:[^\\.]*}",            // Root-level SPA paths like /home, /login
-            "/**/{path:[^\\.]*}"          // Nested paths like /admin/xyz
+            "/**/{path:[^\\.]*}",          // Nested paths like /admin/xyz
+            "/error"
     })
     public String forwardAdminPaths() {
         return "forward:/index.html";

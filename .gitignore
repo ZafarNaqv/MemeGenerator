@@ -51,3 +51,4 @@ Thumbs.dbsrc/main/resources/application.properties
 
 *.jsonl
 *.json
+*.properties
