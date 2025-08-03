@@ -12,7 +12,7 @@ export default function ProtectedAdminRoute({ children }) {
             return;
         }
 
-        fetch("/api/user", {
+        fetch("/api/users/me", {
             credentials: "include"
         })
             .then(res => (res.ok ? res.json() : null))

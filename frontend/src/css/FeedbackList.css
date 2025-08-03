@@ -1,0 +1,48 @@
+.feedback-list {
+    margin-top: 30px;
+    padding: 20px;
+}
+
+.copy-btn {
+    background: transparent;
+    border: none;
+    color: #000;
+    cursor: pointer;
+    font-size: 14px;
+    transition: color 0.2s ease;
+}
+
+.copy-btn:hover {
+    color: #fff;
+}
+
+
+.feedback-form textarea {
+    resize: vertical;
+    padding: 0.5rem;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+
+.feedback-form button {
+    padding: 12px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 8px;
+    border: none;
+    background-color: #3498db;
+    color: white;
+    transition: background-color 0.3s ease;
+    align-self: flex-start;
+    width: 100%;
+}
+
+.feedback-form button:hover:enabled {
+    background-color: #2980b9;
+}
+
+.feedback-form button:disabled {
+    background-color: #7fb8e5;
+    cursor: not-allowed;
+}

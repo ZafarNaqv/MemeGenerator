@@ -1,23 +1,36 @@
 package com.ai.llm.generation.demo.controller;
 
+import com.ai.llm.generation.demo.model.User;
+import com.ai.llm.generation.demo.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 @RestController
+@RequestMapping("/api/users")
 public class UserController {
     
     @Value("${admin.email}")
     private String adminEmail;
     
-    @GetMapping("/api/user")
+    private final UserRepository userRepository;
+    
+    @Autowired
+    public UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+    
+    @GetMapping("/me")
     public Map<String, Object> user(@AuthenticationPrincipal OAuth2User principal) {
         if (principal == null && "dev".equals(System.getProperty("spring.profiles.active"))) {
             return Map.of(
@@ -37,5 +50,10 @@ public class UserController {
                 "name", Objects.requireNonNull(principal.getAttribute("name")),
                 "isAdmin", isAdmin
         );
+    }
+    
+    @GetMapping
+    public List<User> getAllUsers() {
+        return userRepository.findAll(); // assuming userRepository is already injected
     }
 }
