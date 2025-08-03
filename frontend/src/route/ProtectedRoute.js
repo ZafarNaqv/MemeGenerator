@@ -21,7 +21,15 @@ export default function ProtectedRoute({ children }) {
             .finally(() => setChecked(true));
     }, []);
 
-    if (!checked) return <div>Loading...</div>;
+    if (!checked) {
+        return (
+            <div className="full-page">
+                <div className="container" style={{ textAlign: "center", fontSize: "1.5rem", color: "#2c3e50" }}>
+                    Loading...
+                </div>
+            </div>
+        );
+    }
     if (!user) return <Navigate to="/login" />;
     return children;
 }
