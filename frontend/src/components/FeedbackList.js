@@ -1,4 +1,5 @@
-import "./FeedbackList.css";
+import "../css/FeedbackList.css";
+import "../App.css"
 import React, {useState} from "react";
 
 function FeedbackList({ feedbacks, onUpdate }){

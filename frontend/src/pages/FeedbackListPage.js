@@ -1,7 +1,7 @@
-// src/pages/FeedbackListPage.js
+
 import React, { useEffect, useState } from "react";
 import FeedbackList from "../components/FeedbackList";
-import "../App.css"; // or separate CSS if preferred
+import "../App.css";
 
 function FeedbackListPage() {
     const [feedbacks, setFeedbacks] = useState([]);
@@ -23,7 +23,7 @@ function FeedbackListPage() {
     }, []);
 
     return (
-        <div className="container">
+        <div className="container" style={{ textAlign: "center" }}>
             <h2>User Feedbacks</h2>
             {error && <p style={{ color: "red" }}>{error}</p>}
             <FeedbackList feedbacks={feedbacks}  onUpdate={fetchFeedbacks} />

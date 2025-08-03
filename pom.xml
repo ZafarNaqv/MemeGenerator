@@ -131,14 +131,11 @@
 
 					<!-- npm run build -->
 					<execution>
-						<id>npm run build with env</id>
+						<id>npm run build</id>
 						<goals><goal>npm</goal></goals>
 						<phase>generate-resources</phase>
 						<configuration>
-							<arguments>run build</arguments>
-							<environmentVariables>
-								<REACT_APP_DEV_MODE>true</REACT_APP_DEV_MODE>
-							</environmentVariables>
+							<arguments>${npm.build.script}</arguments>
 						</configuration>
 					</execution>
 				</executions>
@@ -168,6 +165,20 @@
 			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<npm.build.script>run build:dev</npm.build.script>
+			</properties>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<npm.build.script>run build:prod</npm.build.script>
+			</properties>
+		</profile>
+	</profiles>
 
 
 </project>

@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import FeedbackForm from "./FeedbackForm";
 import {BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom";
-import FeedbackListPage from "./pages/FeedbackListPage";
 import LandingPage from "./pages/LandingPage";
 import ProtectedRoute from "./route/ProtectedRoute";
 import ProtectedAdminRoute from "./route/ProtectedAdminRoute";
@@ -9,6 +8,7 @@ import './App.css';
 import HoverFlipCard from "./components/HoverFlipCard";
 import {nameCards} from "./props/userCard";
 import ErrorPage from "./pages/ErrorPage";
+import AdminPage from "./pages/AdminPage";
 
 
 function App() {
@@ -22,9 +22,9 @@ function App() {
             </ProtectedRoute>
           } />
 
-          <Route path="/admin/feedback" element={
+          <Route path="/admin" element={
             <ProtectedAdminRoute>
-              <FeedbackListPage />
+              <AdminPage />
             </ProtectedAdminRoute>
           } />
 
