@@ -1,104 +1,76 @@
 package com.ai.llm.generation.demo.service;
 
+import com.ai.llm.generation.demo.model.Feedback;
+import com.ai.llm.generation.demo.model.User;
 import com.ai.llm.generation.demo.model.dto.FeedbackRequestDTO;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ai.llm.generation.demo.repository.FeedbackRepository;
+import com.ai.llm.generation.demo.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import java.util.*;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
+import static com.ai.llm.generation.demo.constants.DefaultContants.DEV_USER_ID;
+
 
 @Service
 public class FeedbackService {
-    private static final Logger logger = LoggerFactory.getLogger(OpenRouterService.class);
-    private final Path feedbackFile = Paths.get("feedback.jsonl");
-    private final ObjectMapper mapper = new ObjectMapper();
+    private static final Logger logger = LoggerFactory.getLogger(FeedbackService.class);
     
-    public ResponseEntity<?> saveFeedback(FeedbackRequestDTO dto) {
-        try {
-            String entry = mapper.writeValueAsString(dto);
-            Files.writeString(
-                    feedbackFile,
-                    entry + System.lineSeparator(),
-                    StandardOpenOption.CREATE,
-                    StandardOpenOption.APPEND
-            );
-            return ResponseEntity.ok().build();
-        } catch (IOException e) {
-            logger.error("Failed to save feedback: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save feedback");
-        }
+    private final FeedbackRepository repository;
+    private final UserRepository userRepository;
+    
+    @Autowired
+    public FeedbackService(FeedbackRepository repository,UserRepository userRepository) {
+        this.repository = repository;
+        this.userRepository=userRepository;
     }
     
-    public List<FeedbackRequestDTO> getAllFeedbackReversed() {
-        try {
-            return Files.readAllLines(feedbackFile).stream()
-                    .map(line -> {
-                        try {
-                            return mapper.readValue(line, FeedbackRequestDTO.class);
-                        } catch (IOException e) {
-                            logger.warn("Skipping malformed line: {}", line);
-                            return null;
-                        }
-                    })
-                    .filter(Objects::nonNull)
-                    .sorted(Comparator.comparing(FeedbackRequestDTO::getTimestamp).reversed())
-                    .toList();
-        } catch (IOException e) {
-            logger.error("Failed to read feedbacks: {}", e.getMessage());
-            return List.of();
+    public ResponseEntity<?> saveFeedback(FeedbackRequestDTO dto, OAuth2User principal) {
+        Long userId = DEV_USER_ID;
+        Feedback feedback = new Feedback(DEV_USER_ID, dto.getFeedback());
+        if(!"dev".equals(System.getProperty("spring.profiles.active"))){
+            if (principal == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated");
+            }
+            String email = principal.getAttribute("email");
+            Optional<User> userOpt = userRepository.findByEmail(email);
+            
+            if (userOpt.isEmpty()) {
+                logger.error("Logged in user not found.");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
+            User user = userOpt.get();
+             feedback = new Feedback(user.getId(), dto.getFeedback());
+            userId = userOpt.get().getId();
         }
+        repository.save(feedback);
+        logger.info("Feedback saved by userId{} : {}", userId, feedback);
+        return ResponseEntity.ok().build();
+    }
+    
+    public List<Feedback> getAllFeedbackReversed() {
+        return repository.findAll().stream()
+                .sorted(Comparator.comparing(Feedback::getCreatedAt).reversed())
+                .toList();
     }
     
     
     public ResponseEntity<?> deleteAllFeedbacks() {
-        try {
-            if (Files.exists(feedbackFile)) {
-                // Truncate the file (clear its contents)
-                Files.newBufferedWriter(feedbackFile, StandardOpenOption.TRUNCATE_EXISTING).close();
-            }
-            return ResponseEntity.ok("All feedbacks deleted.");
-        } catch (IOException e) {
-            logger.error("Failed to delete all  feedback: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Failed to delete feedbacks: " + e.getMessage());
-        }
+        repository.deleteAll();
+        return ResponseEntity.ok("All feedbacks deleted.");
     }
     
-    public ResponseEntity<?> deleteByFeedbackId(String feedbackId) {
-        try {
-            List<String> lines = Files.readAllLines(feedbackFile);
-            List<String> filteredLines = lines.stream()
-                    .filter(line -> {
-                        try {
-                            FeedbackRequestDTO dto = mapper.readValue(line, FeedbackRequestDTO.class);
-                            return !feedbackId.equals(dto.getFeedbackId());
-                        } catch (Exception e) {
-                            return true;
-                        }
-                    })
-                    .collect(Collectors.toList());
-
-            if (lines.size() == filteredLines.size()) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body("No feedback found with id: " + feedbackId);
-            }
-            Files.write(feedbackFile, filteredLines, StandardOpenOption.TRUNCATE_EXISTING);
-            
-            return ResponseEntity.ok("Feedback successfully deleted");
-            
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to delete feedback with ID: " + feedbackId, e);
+    public ResponseEntity<?> deleteByFeedbackId(UUID feedbackId) {
+        if (repository.existsById(feedbackId)) {
+            repository.deleteById(feedbackId);
+            return ResponseEntity.ok("Feedback successfully deleted.");
+        } else {
+            return ResponseEntity.status(404).body("No feedback found with id: " + feedbackId);
         }
     }
 }

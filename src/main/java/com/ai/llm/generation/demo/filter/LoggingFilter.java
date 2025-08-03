@@ -18,6 +18,26 @@ import java.util.Map;
 @Component
 public class LoggingFilter extends OncePerRequestFilter {
     private static final Logger logger = LoggerFactory.getLogger(LoggingFilter.class);
+    private static final String[] STATIC_PATH_PREFIXES = {
+            "/static/", "/webjars/", "/favicon.ico", "/manifest.json", "/robots.txt", "/.well-known/"
+    };
+    
+    private static final String[] STATIC_SUFFIXES = {
+            ".css", ".js", ".map", ".png", ".jpg", ".jpeg", ".gif", ".svg", ".ico", ".woff", ".woff2", ".ttf", ".eot"
+    };
+    
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String uri = request.getRequestURI();
+        for (String prefix : STATIC_PATH_PREFIXES) {
+            if (uri.startsWith(prefix)) return true;
+        }
+        for (String suffix : STATIC_SUFFIXES) {
+            if (uri.endsWith(suffix)) return true;
+        }
+        return false;
+    }
+    
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper(request);

@@ -39,3 +39,49 @@
     background-color: #f1f1f1;
     cursor: default;
 }
+
+.tooltip-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-text {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    width: max-content;
+    background-color: #c4e2f9;
+    color: #000;
+    text-align: left;
+    border-radius: 6px;
+    padding: 8px 10px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.tooltip-wrapper:hover .tooltip-text,
+.tooltip-text:hover {
+    visibility: visible;
+    opacity: 1;
+}
+
+.copy-btn {
+    background: transparent;
+    border: none;
+    color: #000;
+    cursor: pointer;
+    font-size: 14px;
+    transition: color 0.2s ease;
+}
+
+.copy-btn:hover {
+    color: #fff;
+}

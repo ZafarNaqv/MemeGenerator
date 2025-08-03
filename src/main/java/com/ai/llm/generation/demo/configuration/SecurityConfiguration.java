@@ -1,6 +1,6 @@
 package com.ai.llm.generation.demo.configuration;
 
-import com.ai.llm.generation.demo.service.CustomOAuth2UserService;
+import com.ai.llm.generation.demo.service.CustomOidcUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -20,7 +20,7 @@ public class SecurityConfiguration {
     private String ADMIN_EMAIL;
     
     @Autowired
-    private CustomOAuth2UserService customOAuth2UserService;
+    private CustomOidcUserService customOidcUserService;
     
     @Bean
     @Profile("!dev")
@@ -42,7 +42,7 @@ public class SecurityConfiguration {
                 .oauth2Login(oauth -> oauth
                         .loginPage("/login")
                         .userInfoEndpoint(userInfo -> userInfo
-                                .userService(customOAuth2UserService)
+                                .oidcUserService(customOidcUserService)
                         )
                         .defaultSuccessUrl("/home", true)
                 )

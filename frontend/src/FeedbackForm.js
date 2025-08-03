@@ -1,9 +1,9 @@
-// src/FeedbackForm.js
 import React, { useState } from "react";
-
+import "./css/Feedback.css"
 function FeedbackForm() {
     const [feedback, setFeedback] = useState("");
     const [status, setStatus] = useState(null);
+    const [isError, setIsError] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -14,20 +14,21 @@ function FeedbackForm() {
             const response = await fetch("/api/feedback", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
+                credentials: "same-origin",
                 body: JSON.stringify(payload),
             });
-
+            const bodyText = await response.text();
             if (!response.ok) {
-                throw new Error("Failed to submit feedback");
+                setIsError(true);
+                setStatus(`Error: ${bodyText || "Failed to submit feedback."}`);
+            }else{
+                setIsError(false);
+                setStatus("Feedback submitted successfully!");
+                setFeedback("");
             }
-
-            setStatus("Feedback submitted successfully!");
-            setFeedback(""); // clear textarea
         } catch (error) {
-            setStatus("Error submitting feedback.");
+            setStatus(`Error submitting feedback.: ${error.message}`);
         }
-
-        // Optional: clear status after some seconds
         setTimeout(() => setStatus(null), 4000);
     };
 
@@ -43,7 +44,11 @@ function FeedbackForm() {
                 placeholder="Enter your feedback here..."
             />
             <button type="submit">Submit Feedback</button>
-            {status && <p className="feedback-status">{status}</p>}
+            {status && (
+                <p className={`feedback-status ${isError ? "error" : "success"}`} role="alert">
+                    {status}
+                </p>
+            )}
         </form>
     );
 }
