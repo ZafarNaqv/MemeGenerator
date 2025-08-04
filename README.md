@@ -1,29 +1,32 @@
 ## Know Your Name
-## TODO:
-- Add backend apis X
-- Implement Advice to log parameter details X
-- Add google Signin maybe? X
-- Logging framework X
-- Cloud deployment X
-- Add a way to save feedback X
-- On production might have to include secrets manager to include api key X
-- Add profile dev/prod
-- Add PostGres support 
-- Save feedback and user Data from google
+
+- Get valuable insights about your name
 
 
 ## 🧠 Core Features Recap
 🖼️ Frontend
-- Name Name/feedback
+- React for responsive UI
+- React routes for navigation between pages
+- Bundled together with backend using maven-frontend-plugin (Avoided CORS policies)
 
-- Get appropiate response (from backend).
 
+## 🧰 Backend (Spring Boot)
 
-- Hosted for free (e.g., Render).
+- Invoke Openrouter AI model's chat completion api via Retrofit
+- Authentication via Oauth (Gmail Supported)
+- Admin Panel to monitor user data
+- Dev Mode to skip authentication
+- Controller Advice for Exception Handling
+- Logging Filter to log request parameters
+- Spring Data JPA for persistence
+- Error Page Forwarding
 
-## 🧰 Backend (Java Spring Boot)
-Endpoint to:
+## Database
+- Postgres (as supported by Render)
 
-- Invoke Openrouter api X
+## Cloud
+- Frontend/Backend both hosted on Render's free Tier (Service shutdown upon inactivity and database expiration upon month end)
+- Postgres Cloud Database
 
-- Secure using API key/token.
+## Containerisation
+- Docker 
