@@ -12,8 +12,10 @@ export default function ErrorPage() {
             <div className="error-banner-card">
                 <img src={errorImage} alt="Error" className="error-banner-image" />
                 <div className="error-banner-text">
-                    <AlertTriangle className="error-banner-icon" />
-                    <h1>Oops!</h1>
+                    <div className="error-banner-heading">
+                        <AlertTriangle className="error-banner-icon"/>
+                        <h1>Oops!</h1>
+                    </div>
                     <p>The page you requested was not found.</p>
                     <button className="error-home-button" onClick={() => navigate("/")}>
                         Go Back To Home

@@ -61,7 +61,23 @@ export default function LandingPage() {
     };
     const navigate = useNavigate();
     const isDev = process.env.REACT_APP_DEV_MODE === "true";
-    console.log("isDev" + isDev);
+
+    const handleLogin = async () => {
+        if (isDev) {
+            navigate("/home");
+            return;
+        }
+        try {
+            const res = await fetch("/api/users/me", { credentials: "include" });
+            if (res.ok) {
+                navigate("/home");
+            } else {
+                window.location.href = "/oauth2/authorization/google"; // Not logged in
+            }
+        } catch {
+            window.location.href = "/oauth2/authorization/google";
+        }
+    };
     return (
         <div className="full-page" style={{ padding: "2rem", fontFamily: "Tahoma, sans-serif" }}>
             <h1 style={{ textAlign: "center", fontSize: "2.5rem", marginBottom: "0.5rem" }}>
@@ -84,7 +100,6 @@ export default function LandingPage() {
                             Login to Get Started (Dev Mode)
                         </button>
                     ) : (
-                        <a href="/oauth2/authorization/google" style={{textDecoration: "none"}}>
                             <button
                                 style={{
                                     padding: "12px 24px",
@@ -99,10 +114,10 @@ export default function LandingPage() {
                                 }}
                                 onMouseOver={(e) => (e.target.style.backgroundColor = "#574bff")}
                                 onMouseOut={(e) => (e.target.style.backgroundColor = "#6c63ff")}
+                                onClick={handleLogin}
                             >
                                 Login to Get Started
                             </button>
-                        </a>
                     )}
                     <p style={{fontFamily: "cursive", marginTop: "1rem", fontSize: "0.95rem", color: "#666"}}>
                         Sign in with your Google account to continue.
