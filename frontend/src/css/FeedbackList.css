@@ -34,8 +34,7 @@
     background-color: #3498db;
     color: white;
     transition: background-color 0.3s ease;
-    align-self: flex-start;
-    width: 100%;
+    align-self: center;
 }
 
 .feedback-form button:hover:enabled {
