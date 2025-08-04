@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "../App.css";
+import "../css/LandingPage.css";
 import {useNavigate} from "react-router-dom";
 
 export default function LandingPage() {
@@ -71,67 +72,39 @@ export default function LandingPage() {
             </p>
 
             <div
-                //className="container"
-                style={{
-                    display: "flex",
-                    alignItems: "center", // Vertical center
-                    justifyContent: "space-between",
-                    margin: "3rem auto",
-                    maxWidth: "1100px",
-                    gap: "3rem"
-                }}
+                className="landing-layout"
             >
-                <div
-                    style={{
-                        flex: 2,
-                        backgroundColor: "#ffffff",
-                        padding: "2rem",
-                        borderRadius: "12px",
-                        boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
-                        fontSize: "1.1rem",
-                        lineHeight: "1.7",
-                        color: "#333"
-                    }}
-                >
+                <div className="info-box">
                     {parsedContent ?? displayedText}
                 </div>
 
-                <div
-                    style={{
-                        flex: "0 0 280px",
-                        backgroundColor: "#ffffff",
-                        padding: "2rem",
-                        borderRadius: "12px",
-                        boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
-                        textAlign: "center"
-                    }}
-                >
+                <div className="login-box">
                     {isDev ? (
-                            <button onClick={() => navigate("/home")}>
-                                Login to Get Started (Dev Mode)
-                            </button>
-                        ) :(
-                        <a href="/oauth2/authorization/google" style={{ textDecoration: "none" }}>
-                        <button
-                            style={{
-                                padding: "12px 24px",
-                                fontSize: "16px",
-                                width: "100%",
-                                backgroundColor: "#6c63ff",
-                                color: "#fff",
-                                border: "none",
-                                borderRadius: "8px",
-                                cursor: "pointer",
-                                transition: "background-color 0.3s ease"
-                            }}
-                            onMouseOver={(e) => (e.target.style.backgroundColor = "#574bff")}
-                            onMouseOut={(e) => (e.target.style.backgroundColor = "#6c63ff")}
-                        >
-                            Login to Get Started
+                        <button onClick={() => navigate("/home")}>
+                            Login to Get Started (Dev Mode)
                         </button>
-                    </a>
+                    ) : (
+                        <a href="/oauth2/authorization/google" style={{textDecoration: "none"}}>
+                            <button
+                                style={{
+                                    padding: "12px 24px",
+                                    fontSize: "16px",
+                                    width: "100%",
+                                    backgroundColor: "#6c63ff",
+                                    color: "#fff",
+                                    border: "none",
+                                    borderRadius: "8px",
+                                    cursor: "pointer",
+                                    transition: "background-color 0.3s ease"
+                                }}
+                                onMouseOver={(e) => (e.target.style.backgroundColor = "#574bff")}
+                                onMouseOut={(e) => (e.target.style.backgroundColor = "#6c63ff")}
+                            >
+                                Login to Get Started
+                            </button>
+                        </a>
                     )}
-                    <p style={{ fontFamily: "cursive", marginTop: "1rem", fontSize: "0.95rem", color: "#666" }}>
+                    <p style={{fontFamily: "cursive", marginTop: "1rem", fontSize: "0.95rem", color: "#666"}}>
                         Sign in with your Google account to continue.
                     </p>
                 </div>

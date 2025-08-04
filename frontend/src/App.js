@@ -137,7 +137,7 @@ function HomePage() {
           ))}
         </div>
 
-        <div className="form-group name-form">
+        <div className="form-group">
           <label htmlFor="name">Enter Name:</label>
           <input
               id="name"
@@ -164,7 +164,7 @@ function HomePage() {
           </div>
         </div>
 
-        <div className="form-group feedback-container">
+        <div className="form-group">
           <FeedbackForm/>
         </div>
       </div>

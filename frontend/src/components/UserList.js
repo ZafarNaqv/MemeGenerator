@@ -24,11 +24,11 @@ function UsersTable() {
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th className="wide-col">User ID</th>
+                            <th>User ID</th>
                             <th>Email</th>
-                            <th>Name</th>
+                            <th className="wide-col">Name</th>
                             <th className="pic-col" >Profile Pic</th>
-                            <th>Created At</th>
+                            <th className="wide-col">Created At</th>
                         </tr>
                         </thead>
                         <tbody>
