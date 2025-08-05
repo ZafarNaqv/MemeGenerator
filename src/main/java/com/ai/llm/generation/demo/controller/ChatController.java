@@ -18,7 +18,6 @@ public class ChatController {
     }
     
     @PostMapping("/name")
-    @DevOrAdminOnly
     public String getChatCompletion(@RequestBody NameRequestDTO nameRequest, @AuthenticationPrincipal OAuth2User principal) {
         return service.getCompletion(nameRequest.getName(),principal);
     }
