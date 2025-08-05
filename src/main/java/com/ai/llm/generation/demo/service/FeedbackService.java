@@ -59,7 +59,6 @@ public class FeedbackService {
                 .toList();
     }
     
-    
     public ResponseEntity<?> deleteAllFeedbacks() {
         repository.deleteAll();
         return ResponseEntity.ok("All feedbacks deleted.");

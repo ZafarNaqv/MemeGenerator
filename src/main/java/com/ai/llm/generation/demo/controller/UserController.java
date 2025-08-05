@@ -1,5 +1,6 @@
 package com.ai.llm.generation.demo.controller;
 
+import com.ai.llm.generation.demo.aspect.DevOrAdminOnly;
 import com.ai.llm.generation.demo.model.User;
 import com.ai.llm.generation.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import static com.ai.llm.generation.demo.constants.DefaultConstants.DEV_USER_EMAIL;
 
 @RestController
 @RequestMapping("/api/users")
@@ -34,7 +37,7 @@ public class UserController {
     public Map<String, Object> user(@AuthenticationPrincipal OAuth2User principal) {
         if (principal == null && "dev".equals(System.getProperty("spring.profiles.active"))) {
             return Map.of(
-                    "email", "dev@example.com",
+                    "email", DEV_USER_EMAIL,
                     "name", "Admin User",
                     "isAdmin", true
             );
@@ -53,7 +56,8 @@ public class UserController {
     }
     
     @GetMapping
+    @DevOrAdminOnly
     public List<User> getAllUsers() {
-        return userRepository.findAll(); // assuming userRepository is already injected
+        return userRepository.findAll();
     }
 }

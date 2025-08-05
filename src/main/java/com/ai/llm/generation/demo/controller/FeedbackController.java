@@ -1,5 +1,6 @@
 package com.ai.llm.generation.demo.controller;
 
+import com.ai.llm.generation.demo.aspect.DevOrAdminOnly;
 import com.ai.llm.generation.demo.model.dto.FeedbackRequestDTO;
 import com.ai.llm.generation.demo.service.FeedbackService;
 import org.springframework.http.ResponseEntity;
@@ -30,16 +31,19 @@ public class FeedbackController {
     }
     
     @GetMapping
+    @DevOrAdminOnly
     public ResponseEntity<?> getAllFeedbacks() {
         return ResponseEntity.ok(service.getAllFeedbackReversed());
     }
     
     @DeleteMapping
+    @DevOrAdminOnly
     public ResponseEntity<?> deleteAllFeedbacks() {
         return service.deleteAllFeedbacks();
     }
     
     @DeleteMapping("/{feedbackId}")
+    @DevOrAdminOnly
     public ResponseEntity<?> deleteById(@PathVariable String feedbackId) {
         try {
             UUID id = UUID.fromString(feedbackId);
